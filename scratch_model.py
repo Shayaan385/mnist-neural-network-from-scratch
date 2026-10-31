@@ -4,9 +4,7 @@ import tensorflow as tf
 import matplotlib.pyplot as plt
 import time
 
-# ==========================================
 # 1. LOAD AND PREPARE THE DATA
-# ==========================================
 
 (x_train, y_train), (x_test, y_test) = (
     tf.keras.datasets.mnist.load_data()
@@ -19,9 +17,7 @@ X_test = x_test.reshape(-1, 784).astype(np.float32) / 255.0
 print("Training images:", X_train.shape)
 print("Testing images:", X_test.shape)
 
-# ==========================================
 # 2. DEFINE NETWORK ARCHITECTURE
-# ==========================================
 
 input_size = 784
 hidden_size = 128
@@ -46,9 +42,7 @@ W2 = (
 )
 b2 = np.zeros((1, output_size))
 
-# ==========================================
 # 3. ACTIVATION FUNCTIONS
-# ==========================================
 
 def relu(z):
     return np.maximum(0, z)
@@ -60,10 +54,8 @@ def softmax(z):
     shifted = z - np.max(z, axis=1, keepdims=True)
     exp_z = np.exp(shifted)
     return exp_z / np.sum(exp_z, axis=1, keepdims=True)
-
-# ==========================================
+    
 # 4. FORWARD PROPAGATION
-# ==========================================
 
 def forward(X):
     Z1 = X @ W1 + b1
@@ -74,9 +66,7 @@ def forward(X):
 
     return Z1, A1, P
 
-# ==========================================
 # 5. LOSS FUNCTION
-# ==========================================
 
 def cross_entropy(P, y):
     m = len(y)
@@ -86,9 +76,7 @@ def cross_entropy(P, y):
         np.log(np.clip(correct_probabilities, 1e-12, 1.0))
     )
 
-# ==========================================
 # 6. TRAIN THE NEURAL NETWORK
-# ==========================================
 
 loss_history = []
 accuracy_history = []
@@ -111,10 +99,8 @@ for epoch in range(epochs):
 
         # Forward propagation
         Z1, A1, P = forward(X_batch)
-
-        # ==================================
+        
         # BACKPROPAGATION
-        # ==================================
 
         # Output layer gradient
         dZ2 = P.copy()
@@ -130,9 +116,7 @@ for epoch in range(epochs):
         dW1 = X_batch.T @ dZ1
         db1 = np.sum(dZ1, axis=0, keepdims=True)
 
-        # ==================================
         # GRADIENT DESCENT
-        # ==================================
 
         W1 -= learning_rate * dW1
         b1 -= learning_rate * db1
@@ -159,9 +143,7 @@ for epoch in range(epochs):
 
 training_time = time.perf_counter() - start_time
 
-# ==========================================
 # 7. EVALUATE ON TEST DATA
-# ==========================================
 
 _, _, test_probabilities = forward(X_test)
 
@@ -175,9 +157,7 @@ print(f"Test accuracy: {test_accuracy * 100:.2f}%")
 print(f"Test loss: {test_loss:.4f}")
 print(f"Training time: {training_time:.2f} seconds")
 
-# ==========================================
 # 8. PLOT TRAINING GRAPHS
-# ==========================================
 
 plt.figure(figsize=(8, 4))
 plt.plot(range(1, epochs + 1), loss_history, marker="o")
@@ -203,9 +183,7 @@ plt.tight_layout()
 plt.savefig("scratch_accuracy.png")
 plt.show()
 
-# ==========================================
 # 9. SHOW SOME TEST PREDICTIONS
-# ==========================================
 
 plt.figure(figsize=(10, 5))
 
