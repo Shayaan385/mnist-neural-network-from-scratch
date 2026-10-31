@@ -4,9 +4,8 @@ import numpy as np
 import matplotlib.pyplot as plt
 import time
 
-# ==========================================
+
 # 1. LOAD AND PREPARE DATA
-# ==========================================
 
 (x_train, y_train), (x_test, y_test) = (
     tf.keras.datasets.mnist.load_data()
@@ -15,9 +14,7 @@ import time
 X_train = x_train.astype("float32") / 255.0
 X_test = x_test.astype("float32") / 255.0
 
-# ==========================================
 # 2. MODEL CONFIGURATION
-# ==========================================
 
 hidden_size = 128
 learning_rate = 0.5
@@ -26,9 +23,7 @@ batch_size = 128
 
 tf.keras.utils.set_random_seed(42)
 
-# ==========================================
 # 3. BUILD THE NEURAL NETWORK
-# ==========================================
 
 model = tf.keras.Sequential([
     tf.keras.layers.Input(shape=(28, 28)),
@@ -45,9 +40,7 @@ model = tf.keras.Sequential([
     )
 ])
 
-# ==========================================
 # 4. COMPILE THE MODEL
-# ==========================================
 
 model.compile(
     optimizer=tf.keras.optimizers.SGD(
@@ -59,9 +52,7 @@ model.compile(
 
 model.summary()
 
-# ==========================================
 # 5. TRAIN THE MODEL
-# ==========================================
 
 start_time = time.perf_counter()
 
@@ -75,9 +66,7 @@ history = model.fit(
 
 training_time = time.perf_counter() - start_time
 
-# ==========================================
 # 6. EVALUATE THE MODEL
-# ==========================================
 
 test_loss, test_accuracy = model.evaluate(
     X_test,
@@ -90,9 +79,7 @@ print(f"Test accuracy: {test_accuracy * 100:.2f}%")
 print(f"Test loss: {test_loss:.4f}")
 print(f"Training time: {training_time:.2f} seconds")
 
-# ==========================================
 # 7. TRAINING LOSS GRAPH
-# ==========================================
 
 plt.figure(figsize=(8, 4))
 plt.plot(
@@ -108,9 +95,7 @@ plt.tight_layout()
 plt.savefig("library_loss.png")
 plt.show()
 
-# ==========================================
 # 8. TRAINING ACCURACY GRAPH
-# ==========================================
 
 plt.figure(figsize=(8, 4))
 plt.plot(
@@ -126,9 +111,7 @@ plt.tight_layout()
 plt.savefig("library_accuracy.png")
 plt.show()
 
-# ==========================================
 # 9. DISPLAY PREDICTIONS
-# ==========================================
 
 probabilities = model.predict(X_test, verbose=0)
 predictions = np.argmax(probabilities, axis=1)
@@ -154,9 +137,7 @@ plt.tight_layout()
 plt.savefig("library_predictions.png")
 plt.show()
 
-# ==========================================
 # 10. SAVE THE TRAINED MODEL
-# ==========================================
 
 model.save("library_model.keras")
 
